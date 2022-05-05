@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="What are GPS Coordinates? ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <title>MYHIGHST GPS</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.css" type="text/css" />
+
+    <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
+    <!--[if IE]><link rel="shortcut icon" href="favicon.ico?v3"><![endif]-->
+    <!-- Touch Icons - iOS and Android 2.1+ 180x180 pixels in size. -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/android-chrome-192x192.png" sizes="192x192">
+    <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 192x192 pixels in size. -->
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/normalize.css">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+	    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.52.0/mapbox-gl.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/mapbox-gl/0.52.0/mapbox-gl.css" rel="stylesheet" />
+
+    <script src="js/language_en.js"></script>
+    <script src="js/myhighst.js"></script>
+    <script src="js/script.js" defer></script>
+
+</head>
+
+
+
+
+<body class="logged_out" onload="initialize(48.856614, 2.352221);">
+
+    <!-- Fixed navbar -->
+    <section class="header">
+        <div class="logo-main">
+            <a href="#"><img class="logo" src="img/logo1.png" alt=""></a>
+            <button id="close">
+                <div class="iclose">
+                    <img src="img/close.png" alt="" width="30px">
+                </div>
+            </button>
+        </div>
+        <ul class="navbar">
+
+            <li><a href="index.html">Coordinates</a></li>
+            <li><a href="navigate.html">Direction</a></li>
+            <li><a href="https://myhighst.com.my/">Myhighst</a></li>
+            <li><a href="https://myhighst.com.my/services">Services</a></li>
+            <li><a href="https://myhighst.com.my/contact-us">Contact Us</a></li>
+        </ul>
+                <div class="app">
+                    <a href="#"><img src="img/googleplay.png" alt="" width="70px"></a>
+                    <a href="#"><img src="img/appstore.png" alt="" width="70px"></a>
+                </div>
+
+    </section>
+    <!--/.nav-collapse -->
+
+    <!--/.nav-collapse -->
+    <div id="map_canvas"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div id="map_wrapper">
+                <div id="tools" class="col-md-4">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div id="address_box" class="info_box info_box_green">
+                                <div class="slider">
+                                    <div class="mobile">
+                                        <button id="menubar">
+                                            <div class="icon">
+                                                <img src="img/hamburger.png" alt="" width="30px">
+                                            </div>
+                                        </button>
+                                    </div>
+                                    <h1 class="tools_title">Coordinates Finder</h1>
+                                    <div class="icon">
+                                        <li><a href="navigate.html"><img src="img/navigation.png" alt="" width="30px"></a></li>
+                                    </div>
+                                </div>
+                                <form>
+                                    <div class="form-group">
+                                        <label for="address" class="label-1">Address</label>
+                                        <input id="address" class="form-control" type="text" />
+                                    </div>
+                                    <div class="form-group text-right">
+                                        <input type="button" id="address_to_map" class="submit_button btn btn-primary btn-sm" value="Get coordinates" onclick="codeAddress()" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="gps_box" class="info_box boxman info_box_green lineii">
+                                <h1 class="tools_title">Latitude and Longitude</h1>
+                                <div class="row degrees">
+                                    <div class="col-md-6 text-right">
+                                        <span class="small">Decimal degrees</span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <span class="small">Degrees, Minutes, Seconds</span>
+                                    </div>
+                                </div>
+
+                                <form>
+                                    <div class="form-group">
+                                        <label for="latitude" class="label-1">Latitude</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input id="latitude" class="form-control coordinate_to_map" onkeyup="ddversdms()" type="text" placeholder="Latitude" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="radio table-cell" style="width:17%;">
+                                                            <label class="label-2">
+                                                                <input type="radio" name="latnordsud" value="nord" id="nord" checked />
+                                                                N
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio table-cell" style="width:20%;">
+                                                            <label class="label-2">
+                                                                <input type="radio" name="latnordsud" value="sud" id="sud" />
+                                                                S
+                                                            </label>
+                                                        </div>
+                                                        <input class="input_small coordinate_to_map form-control" id="latitude_degres" type="text" style="width:19%;" onkeyup="dmsversdd()">
+                                                        <input class="input_small coordinate_to_map form-control" id="latitude_minutes" type="text" style="width:19%;" onkeyup="dmsversdd()">
+                                                        <input class="input_medium coordinate_to_map form-control" id="latitude_secondes" type="text" style="width:25%;" onkeyup="dmsversdd()">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="longitude" class="label-1">Longitude</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <input id="longitude" class="form-control coordinate_to_map" onkeyup="ddversdms()" type="text" placeholder="Longitude" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="radio table-cell" style="width:17%;">
+                                                            <label class="label-2">
+                                                                <input type="radio" name="lngestouest" value="est" id="est" checked />
+                                                                E
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio table-cell" style="width:20%;">
+                                                            <label class="label-2">
+                                                                <input type="radio" name="lngestouest" value="ouest" id="ouest" />
+                                                                W </label>
+                                                        </div>
+                                                        <input class="input_small coordinate_to_map form-control" id="longitude_degres" type="text" style="width:19%;" onkeyup="dmsversdd()">
+                                                        <input class="input_small coordinate_to_map form-control" id="longitude_minutes" type="text" style="width:19%;" onkeyup="dmsversdd()">
+                                                        <input class="input_medium coordinate_to_map form-control" id="longitude_secondes" type="text" style="width:25%;" onkeyup="dmsversdd()">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group text-right">
+                                                <input type="button" id="coordinates_to_map" class="submit_button btn btn-primary btn-sm" value="Get address" onclick="codeLatLng(1)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- <footer>
+	    <div class="container">
+		<a class="text-center"><a href="https://myhighst.com.my/">Copyright &copy; 2011 -
+        <script>document.write(new Date().getFullYear());</script> All rights reserved | Myhighst Business Services</a> <span><a href="#" rel="nofollow">Privacy</a></span> | <span><a href="#" rel="nofollow">Terms and Conditions</a></span> | 
+		<p class="text-center"><span>					    <a href="https://myhighst.com.my/contact-us" class="">Contact</a>
+				    </span> | <span><a href="https://myhighst.com.my/about-us">About Myhighst</a></span></p>
+		    				
+		<p class="text-center">This page has been created with the Maps API from <a href="https://www.mapbox.com/" target="_blank">www.mapbox.com</a>.</p>
+
+	    </div>
+	</footer> -->
+
+
+
+
+</body>
+
+</html>

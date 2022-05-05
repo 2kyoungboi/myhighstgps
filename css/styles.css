@@ -1,0 +1,488 @@
+@import "./normalize.css";
+:root {
+  --primary-color: #e13831;
+  --secondary-color: #f57608;
+  --accent-color: #27277d;
+  --color-heading: #1f1f4e;
+  --color-text: #2e3049;
+  --body-color: #8b8b8be8;
+}
+
+html {
+  font-size: 62.5%;
+}
+body {
+  font-size: 2.4rem;
+  font-family: "Ubuntu", sans-serif;
+  margin: 0;
+}
+
+/* map part */
+#map {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(229, 227, 223) url(../img/loader.gif) no-repeat 50% 50%;
+}
+.developer {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  bottom: 0;
+  right: 0;
+  font-weight: bold;
+  text-decoration: none;
+  background: #38383844;
+}
+#map_canvas {
+  box-sizing: content-box;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background: rgb(229, 227, 223);
+  overflow: hidden;
+
+  /* border-bottom: 1px solid #eee;
+  height: 660px;
+  margin-bottom: 15px; */
+  background: rgb(229, 227, 223) url(../img/loader.gif) no-repeat 50% 50%;
+}
+#geocoder-container > div {
+  min-width: 60%;
+  margin-left: 25%;
+  top: 0;
+}
+.mapboxgl-ctrl-geocoder input[type="text"] {
+  font-size: 12px;
+  width: 100%;
+  border: 0;
+  background-color: transparent;
+  height: 40px;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 10px 40px 10px 30px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.mapbox-directions-component {
+  position: relative;
+  background: rgba(255, 255, 255, 0.296);
+  width: 100%;
+}
+
+.mapboxgl-ctrl-group {
+  border-radius: 4px;
+  background: #fff;
+  position: fixed;
+  bottom: 60px;
+  right: 0;
+}
+.mapbox-directions-component-keyline {
+  box-shadow: 0 0 0 2px rgb(0 0 0 / 10%);
+  border-radius: 3px;
+}
+.mapbox-directions-component,
+.mapbox-directions-component *,
+.mapbox-directions-component *:after,
+.mapbox-directions-component *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#menu {
+  position: absolute;
+  background: #9976d1;
+  padding: 10px;
+  bottom: 0;
+  font-size: 2rem;
+  font-family: "Ubuntu", sans-serif;
+  z-index: 999;
+}
+
+.marker {
+  background-image: url("../img/location.png");
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* map ended */
+
+/* Topography */
+h1,
+h2,
+h3 {
+  color: var(--color-heading);
+}
+h2 {
+  margin-bottom: 1rem;
+}
+.tools_title {
+  font-size: 2rem;
+  margin: 0 0 10px;
+  padding-left: 10px;
+}
+small,
+.small {
+  font-size: 13px;
+}
+li {
+  list-style: none;
+}
+/* Topography Ended */
+
+/* login/register */
+.center {
+  position: absolute;
+  top: 40%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+}
+.center h1 {
+  text-align: center;
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid gray;
+}
+.center form {
+  padding: 0 40px;
+}
+form .form_field {
+  position: relative;
+  border-bottom: 2px;
+  margin: 30px 0;
+}
+.form_field input {
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  border: none;
+  background-color: #e4e4e4;
+  outline: none;
+}
+
+.leftfield {
+  position: absolute;
+  top: 150px;
+  left: 70px;
+}
+.iconimg {
+  position: absolute;
+  top: 130px;
+}
+.btni {
+  background: #db261f;
+  color: #fff;
+  width: 100px;
+  flex-wrap: wrap;
+  height: 40px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.btn {
+  background: #db261f;
+  color: #fff;
+  width: 120px;
+  flex-wrap: wrap;
+  height: 40px;
+  border: none;
+  font-size: 15px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+/* Nav/header */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: fixed;
+  top: 0;
+  left: -450px;
+  height: 100vh;
+  width: 300px;
+  padding: 0px 0 5px 5px;
+  background-color: #eeeeeef5;
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+  z-index: 999;
+}
+.header.active {
+  left: 0px;
+}
+.logo {
+  width: 90%;
+}
+img {
+  z-index: 9999;
+}
+.iclose {
+  width: 20px;
+  height: 20px;
+  font-size: 28px;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+button {
+  background: none;
+  border: none;
+  z-index: 99;
+}
+
+.logout {
+  background: #1f1f4e;
+  right: 10px;
+  top: 60px;
+  position: absolute;
+  border-radius: 10px;
+  width: 100px;
+  color: #fff;
+  font-weight: 400;
+  height: 40px;
+  z-index: 99999;
+}
+form {
+  z-index: 99999;
+}
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0;
+  padding-left: 0;
+}
+.navbar li {
+  list-style: none;
+  padding: 0 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid gray;
+  width: 100%;
+}
+.navbar li a {
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #383838;
+  transition: 0.3s ease;
+}
+
+.navbar li a:hover,
+.navbar li a.active {
+  color: var(--primary-color);
+}
+.mobile {
+  display: flex;
+  align-items: center;
+  z-index: 999999999;
+  top: 80px;
+}
+.icon {
+  margin: 0;
+  width: 10px;
+  height: 10px;
+  font-size: 28px;
+  cursor: pointer;
+}
+.app {
+  z-index: 99999;
+  margin: 60px;
+  border-top: 1px solid #202124;
+}
+.lineii{
+  display: none;
+}
+/* End of the nav */
+
+/* Form part */
+/* .col-md-4 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 80px;
+} */
+
+.info_box {
+  background-color: inherit;
+  width: 100%;
+}
+.slider {
+  margin: 0;
+  /* padding: 18px 20px; */
+  height: auto;
+  font: var(--title-font-boing-500);
+  font-size: 18px;
+  color: #202124;
+  letter-spacing: 0.3px;
+  line-height: 18px;
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+}
+.slider {
+  display: grid;
+  gap: 25px;
+  grid-template-columns: 24px minmax(0, 1fr) 24px;
+  align-items: flex-start;
+  /* justify-items: center; */
+  margin: 5px 5px 0;
+  font-size: 16px;
+  line-height: 26px;
+  height: var(--routing-title-height);
+  color: var(--routing-title-color);
+  transition-duration: var(--routing-transition-duration);
+  transition-property: height, color;
+}
+#tools {
+  max-height: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 99;
+  width: 30%;
+}
+#map_buttons,
+#tools {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.info_box_green {
+  background-color: #d2fbe4;
+}
+
+.info_box {
+  flex-wrap: wrap;
+  background-color: #fff;
+  padding: 10px 15px 15px;
+  position: relative;
+  margin-bottom: 10px;
+  -webkit-box-shadow: 0px 1px 4px rgb(0 0 0 / 30%);
+  box-shadow: 0px 1px 4px rgb(0 0 0 / 30%);
+}
+/* .degrees {
+  position: absolute;
+  width: 100%;
+  top: 56px;
+} */
+.form-group {
+  margin-bottom: 10px;
+  border: none;
+}
+.label-1 {
+  font-weight: 500;
+  font-size: 18px;
+}
+#tools .form-group:last-of-type {
+  margin-bottom: 0;
+}
+form-control {
+  border: none;
+}
+/* Form part Ended */
+footer {
+  background: #383838;
+}
+.text-center {
+  color: #fff;
+  text-decoration: none;
+}
+
+@media (max-width: 799px) {
+  /* .header {
+    padding: 10px;
+  } */
+  /* .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    position: fixed;
+    top: 0;
+    right: -300px;
+    height: 100vh;
+    width: 300px;
+    padding: 80px 0 0 10px;
+    background-color: #eeeeeee8;
+    box-shadow: 0 40px 60px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    z-index: 999;
+  } */
+  .navbar.active {
+    right: 0px;
+  }
+  .navbar li {
+    margin-bottom: 25px;
+  }
+  #map_buttons,
+  #tools {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 60%;
+  }
+  .form-control {
+    overflow: visible;
+    width: 60vw;
+}
+  /* .mobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  } */
+  .leftfield {
+    display: none;
+  }
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .mapboxgl-ctrl-top-right {
+    top: 130px;
+    right: 0;
+    position: absolute;
+}
+.logout {
+  background: #1f1f4e;
+  right: 10px;
+  top: 200px;
+  position: absolute;
+  border-radius: 10px;
+  width: 100px;
+  color: #fff;
+  font-weight: 400;
+  height: 40px;
+  z-index: 99999;
+}
+  .btn {
+    background: #db261f;
+    color: #fff;
+    width: 100px;
+    flex-wrap: wrap;
+    height: 40px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  #close {
+    /* position: absolute; */
+    top: 0px;
+    left: 0px;
+  }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/normalize.css">
+</head>
+<body>
+<div class="center">
+<h1>Login</h1>
+<% if (messages.error) { %>
+<% messages.error %>
+<% } %>
+<form action="/login" method="POST">
+    <div class="form_field">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" required>
+    </div>
+    <div class="form_field">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+    </div>
+    <button href="index.html" class="btni" type="submit">Login</button>
+</form>
+<div class="signup_link">
+Not a member?<a href="register.html">Register</a>
+</div>
+
+</div>
+<div class="leftfield">
+    <img class="tree" src="img/tree.jpg" alt="" width="373px">
+</div>
+</body>
+</html>
+
+<!-- clip-path: polygon(0% 0%, 36% 0, 49% 52%, 36% 100%, 0% 100%); -->
