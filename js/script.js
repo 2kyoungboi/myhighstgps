@@ -11,59 +11,58 @@ function errorLocation(){
     settingMap([101.91835,2.70330])
 }
 
-function settingMap(center){
+function settingMap(center) {
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [101.91835,2.70330],
+        center: [101.91835, 2.70330],
         zoom: 15
     });
 
-   const layerList = document.getElementById('menu');
-const inputs = layerList.getElementsByTagName('input');
+    const layerList = document.getElementById('menu');
+    const inputs = layerList.getElementsByTagName('input');
  
-for (const input of inputs) {
-input.onclick = (layer) => {
-const layerId = layer.target.id;
-map.setStyle('mapbox://styles/mapbox/' + layerId);
-};
-}
+    for (const input of inputs) {
+        input.onclick = (layer) => {
+            const layerId = layer.target.id;
+            map.setStyle('mapbox://styles/mapbox/' + layerId);
+        };
+    }
   
-const geocoder = new MapboxGeocoder({
-accessToken: mapboxgl.accessToken,
-marker: {
-color: 'orange'
-},
-mapboxgl: mapboxgl
-});
+    const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        marker: {
+            color: 'orange'
+        },
+        mapboxgl: mapboxgl
+    });
  
-map.addControl(geocoder); 
+    map.addControl(geocoder);
 
     map.addControl(new mapboxgl.NavigationControl());
 
     var directions = new MapboxDirections({
         accessToken: mapboxgl.accessToken,
         unit: 'metric',
-      });
-      map.addControl(directions, 'top-left');
+    });
+    map.addControl(directions, 'top-left');
 
 
-// Add geolocate control to the map.
-map.addControl(
-new mapboxgl.GeolocateControl({
-positionOptions: {
-enableHighAccuracy: true
-},
-// When active the map will receive updates to the device's location as it changes.
-trackUserLocation: true,
-// Draw an arrow next to the location dot to indicate which direction the device is heading.
-showUserHeading: true
-})
-);
+    // Add geolocate control to the map.
+    map.addControl(
+        new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            // When active the map will receive updates to the device's location as it changes.
+            trackUserLocation: true,
+            // Draw an arrow next to the location dot to indicate which direction the device is heading.
+            showUserHeading: true
+        })
+    );
 
 
 }
-
 // navbar section 
 const bar = document.getElementById('menubar');
 const close = document.getElementById('close');
@@ -89,14 +88,28 @@ if (closing)
         scroll.classList.remove('active');
     })
 }
-function codeAddress() {
-    var x = document.querySelector(".lineii");
+function geocodeingi() {
+    var x = document.querySelector("#tools");
     if (x.style.display !== "none") {
       x.style.display = "none";
     } else {
       x.style.display = "block";
     }
-  }
+}
+          var popup = document.getElementById('download');
+         var myBytton = document.getElementById("btn");
+         var span = document.getElementsByClassName("end")[0];
+        //  myBytton.onclick = function() {
+        //     popup.style.display = "block";
+        //  }
+         span.onclick = function() {
+            popup.style.display = "none";
+         }
+         window.onclick = function(event) {
+            if (event.target == popup) {
+               popup.style.display = "none";
+            }
+         }
 //  Oakland Commerce Square, 137 - 1 Lorong Haruan 5 / 5, 70300 Seremban, Negeri Sembilan, West Malaysia
 // 2.7033862732498335 
 //  101.91835468552387

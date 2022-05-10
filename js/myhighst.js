@@ -54,7 +54,7 @@ function myReverseGeocode(latToGeocode, lngToGeocode)
 function updateAll(text,lat,lng) {
 	gl_map.setCenter([lng,lat]);
 	gl_marker.setLngLat([lng, lat]);
-	gl_popup.setHTML('<div id="info_window">'+text+'<br/><strong>Latitude :</strong> ' + Math.round(lat*1000000)/1000000 + ' | <strong>Longitude :</strong> ' + Math.round(lng*1000000)/1000000 + '<br/><strong>URL</strong> : www.myhighst.com/' + locale + '/gps/' + Math.round(lat*1000000)/1000000 + '/' + Math.round(lng*1000000)/1000000 + '<br/><br/>' + elevationButton() + '</div>');
+	gl_popup.setHTML('<div id="info_window">'+text+'<br/><strong>Latitude :</strong> ' + Math.round(lat*1000000)/1000000 + ' | <strong>Longitude :</strong> ' + Math.round(lng*1000000)/1000000 + '<br/><strong>URL</strong> : www.myhighst.com.my/?lat=' + Math.round(lat*1000000)/1000000 + '/' + Math.round(lng*1000000)/1000000 + '<br/><br/>' + elevationButton() + '</div>');
     gl_popup.addTo(gl_map);
 	document.getElementById("latitude").value=lat;
     document.getElementById("longitude").value=lng;

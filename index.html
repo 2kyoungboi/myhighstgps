@@ -61,13 +61,14 @@
 
             <li><a href="index.html">Coordinates</a></li>
             <li><a href="navigate.html">Direction</a></li>
+            <li><a href="gagjgja.html">Direction</a></li>
             <li><a href="https://myhighst.com.my/">Myhighst</a></li>
             <li><a href="https://myhighst.com.my/services">Services</a></li>
             <li><a href="https://myhighst.com.my/contact-us">Contact Us</a></li>
         </ul>
-                <div class="app">
-                    <a href="#"><img src="img/googleplay.png" alt="" width="70px"></a>
-                    <a href="#"><img src="img/appstore.png" alt="" width="70px"></a>
+                <div class="downloadapp">
+                    <a class="downloadicon" href="#"><img src="img/googleplay.png" alt="" width="100px"></a>
+                    <a class="downloadicon" href="#"><img src="img/appstore.png" alt="" width="100px"></a>
                 </div>
 
     </section>
@@ -75,27 +76,51 @@
 
     <!--/.nav-collapse -->
     <div id="map_canvas"></div>
+
+
+    
+<div id="download" class="popup">
+    <!-- Modal content -->
+    <div class="popup-content">
+        <div class="popup-header">
+            <span class="end">×</span>
+            <img src="img/logo1.png" alt="">
+        </div>
+        <div class="popup-body">
+            <h2>DOWNLOAD APP</h2>
+            <div class="downloadapp">
+                <a class="downloadicon" href="#"><img src="img/googleplay.png" alt="" width="70px"></a>
+                <a class="downloadicon" href="#"><img src="img/appstore.png" alt="" width="70px"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="tp">
+            <div class="tpu">
+            <input type="button" class="get-co submit_button btn btn-primary btn-sm" value="Get Geocoder" onclick="geocodeingi()"/>
+            <div class="mobile">
+                <button id="menubar">
+                    <div class="icon">
+                        <img src="img/hamburger.png" alt="" width="30px">
+                    </div>
+                </button>
+            </div>
+            <div class="icon direction">
+                <li><a href="navigate.html"><img src="img/navigation.png" alt="" width="30px"></a></li>
+            </div>
+        </div>
+        </div>
     <div class="container-fluid">
         <div class="row">
             <div id="map_wrapper">
                 <div id="tools" class="col-md-4">
-
                     <div class="row">
 
                         <div class="col-md-12">
                             <div id="address_box" class="info_box info_box_green">
                                 <div class="slider">
-                                    <div class="mobile">
-                                        <button id="menubar">
-                                            <div class="icon">
-                                                <img src="img/hamburger.png" alt="" width="30px">
-                                            </div>
-                                        </button>
-                                    </div>
                                     <h1 class="tools_title">Coordinates Finder</h1>
-                                    <div class="icon">
-                                        <li><a href="navigate.html"><img src="img/navigation.png" alt="" width="30px"></a></li>
-                                    </div>
                                 </div>
                                 <form>
                                     <div class="form-group">
@@ -112,7 +137,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="gps_box" class="info_box boxman info_box_green lineii">
+                            <div id="gps_box" class="info_box boxman info_box_green">
                                 <h1 class="tools_title">Latitude and Longitude</h1>
                                 <div class="row degrees">
                                     <div class="col-md-6 text-right">

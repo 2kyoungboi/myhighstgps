@@ -176,7 +176,7 @@ form .form_field {
   top: 130px;
 }
 .btni {
-  background: #db261f;
+  background: #0000ff7c;
   color: #fff;
   width: 100px;
   flex-wrap: wrap;
@@ -185,8 +185,9 @@ form .form_field {
   margin-bottom: 10px;
   cursor: pointer;
 }
+
 .btn {
-  background: #db261f;
+  background: #0000ff7c;
   color: #fff;
   width: 120px;
   flex-wrap: wrap;
@@ -302,11 +303,8 @@ form {
 .app {
   z-index: 99999;
   margin: 60px;
-  border-top: 1px solid #202124;
 }
-.lineii{
-  display: none;
-}
+
 /* End of the nav */
 
 /* Form part */
@@ -353,12 +351,13 @@ form {
   bottom: 0;
   z-index: 99;
   width: 30%;
-}
+} 
 #map_buttons,
 #tools {
   position: absolute;
-  top: 10px;
+  top: 51px;
   left: 10px;
+
 }
 
 .info_box_green {
@@ -401,7 +400,141 @@ footer {
   color: #fff;
   text-decoration: none;
 }
+.tp {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  z-index: 99;
+  width: 32.7%;
+  margin: 0 10px;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 0 18px 0 rgb(0 0 0 / 30%);
 
+}
+.tpu{
+    display: flex;
+  align-items: flex-start;
+    justify-content: space-between;
+    margin: 10px 20px 10px 20px ;
+}
+.direction{
+  position: absolute;
+  right: 30px;
+}
+ .get-co {
+   z-index: 99999;
+   position: absolute;
+   top: 5px;
+   left: 100px;
+   background-color: #0000ff7c;
+ }
+ /* popup */
+.popup {
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #F1F1F1;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+.popup-content {
+  position: fixed;
+  bottom: 0;
+  background-color: #ffffff;
+  width: 100%;
+  z-index: 9999;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.5s;
+  animation-name: slideIn;
+  animation-duration: 0.5s
+}
+
+.end {
+  color: white;
+  float: right;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.end:hover,
+.end:focus {
+  color: #000;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.popup-header {
+  padding: 1px 10px;
+  background-color: #8AC1E0;
+  color: white;
+}
+
+.popup-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px 5px;
+}
+.downloadapp{
+  padding: 10px;
+}
+.downloadicon{
+  padding: 10px;
+}
+@-webkit-keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0
+  }
+
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0
+  }
+
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+ /* popup ended */
 @media (max-width: 799px) {
   /* .header {
     padding: 10px;
@@ -471,7 +604,7 @@ footer {
   z-index: 99999;
 }
   .btn {
-    background: #db261f;
+    background: #0000ff7c;
     color: #fff;
     width: 100px;
     flex-wrap: wrap;
@@ -485,4 +618,28 @@ footer {
     top: 0px;
     left: 0px;
   }
+    .get-co {
+      z-index: 99999;
+        top: 5px;
+          left: 100px;
+      background-color: #0000ff7c;
+    }
+    .tp{
+      z-index: 99999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 50px;
+        z-index: 99;
+        width: 90%;
+        margin:0 10px;
+        background-color: #fff;
+    }
+    #tools {
+      display: none;
+      position: absolute;
+      top: 50px;
+      box-shadow: 0 0 18px 0 rgb(0 0 0 / 30%);
+    }
 }
