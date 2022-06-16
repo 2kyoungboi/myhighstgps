@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Demo: Sort stores by distance</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
+    <!-- Mapbox GL JS -->
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet" />
+    <!-- Geocoder plugin -->
+    <script
+        src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
+        type="text/css" />
+
+        <!-- <link rel="stylesheet" href="css/styles.css"> -->
+        <link rel="stylesheet" href="css/normalize.css">
+    <!-- Turf.js plugin -->
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <style>
+        body {
+            color: #404040;
+            font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+        .header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        position: fixed;
+        top: 0;
+        left: -450px;
+        height: 100vh;
+        width: 300px;
+        padding: 0px 0 5px 5px;
+        background-color: #eeeeeef5;
+        box-shadow: 10px 0 40px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+        z-index: 999999;
+        }
+        .header.active {
+        left: 0px;
+        }
+        .logo {
+        width: 90%;
+        }
+        img {
+        z-index: 9999;
+        }
+        .iclose {
+        width: 20px;
+        height: 20px;
+        font-size: 28px;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        border: none;
+        cursor: pointer;
+        display: inline-block;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        }
+        button {
+        background: none;
+        border: none;
+        z-index: 99;
+        }
+
+        form {
+        z-index: 99999;
+        }
+        .navbar {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin: 0;
+        padding-left: 0;
+        }
+        .navbar li {
+        list-style: none;
+        padding: 0 20px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid gray;
+        width: 100%;
+        }
+        .navbar li a {
+        text-decoration: none;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #383838;
+        transition: 0.3s ease;
+        }
+
+        .navbar li a:hover,
+        .navbar li a.active {
+        color: var(--primary-color);
+        }
+        .mobile {
+        display: flex;
+        align-items: center;
+        z-index: 9999;
+        top: 80px;
+        }
+        .icon {
+        margin: 0;
+        width: 10px;
+        height: 10px;
+        font-size: 28px;
+        cursor: pointer;
+        }
+        .app {
+        z-index: 99999;
+        margin: 60px;
+        }
+
+        /* End of the nav */
+
+        /* Form part */
+        /* .col-md-4 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 80px;
+        } */
+
+        .info_box {
+        background-color: inherit;
+        width: 100%;
+        }
+        .slider {
+        margin: 0;
+        /* padding: 18px 20px; */
+        height: auto;
+        font: var(--title-font-boing-500);
+        font-size: 18px;
+        color: #202124;
+        letter-spacing: 0.3px;
+        line-height: 18px;
+        background: #fff;
+        border-radius: 10px 10px 0 0;
+        }
+        .slider {
+        display: grid;
+        gap: 25px;
+        grid-template-columns: 24px minmax(0, 1fr) 24px;
+        align-items: flex-start;
+        /* justify-items: center; */
+        margin: 5px 5px 0;
+        font-size: 16px;
+        line-height: 26px;
+        height: var(--routing-title-height);
+        color: var(--routing-title-color);
+        transition-duration: var(--routing-transition-duration);
+        transition-property: height, color;
+        }
+
+        .sidebar {
+            position: absolute;
+            width: 33.3333%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            border-right: 1px solid rgba(0, 0, 0, 0.25);
+        }
+
+        .pad2 {
+            padding: 20px;
+        }
+
+        .map {
+            position: absolute;
+            left: 33.3333%;
+            width: 66.6666%;
+            top: 0;
+            bottom: 0;
+        }
+        /* .map-area{
+            position: relative;
+        } */
+        h1 {
+            font-size: 32px;
+            margin: 0;
+            font-weight: 700;
+            line-height: 20px;
+            padding: 20px 2px;
+        }
+
+        a {
+            color: #404040;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #101010;
+        }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: right;
+            flex-wrap: wrap;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            min-height: 60px;
+            line-height: 60px;
+            padding: 20px 10px;
+            background: rgb(253, 187, 45);
+            background: linear-gradient(0deg, rgba(253, 187, 45, 1) 0%, rgba(234, 21, 10, 0.923) 85%);
+            color: #fff;
+        }
+
+        .listings {
+            height: 100%;
+            overflow: auto;
+            padding-bottom: 60px;
+        }
+
+        .listings .item {
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        .listings .item:last-child {
+            border-bottom: none;
+        }
+
+        .listings .item .title {
+            display: flex;
+            color: #20205b;
+            font-weight: 700;
+        }
+
+        .list-name{
+            padding-left: 10px;
+        }
+
+        .listings .item .title small {
+            font-weight: 400;
+        }
+
+        .listings .item.active .title,
+        .listings .item .title:hover {
+            color: #2d2d8a;
+        }
+
+        .listings .item.active {
+            background-color: #f8f8f8;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 3px;
+            border-left: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        ::-webkit-scrollbar-track {
+            background: none;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgb(253, 187, 45);
+            border-radius: 0;
+        }
+
+        .marker {
+            border: none;
+            cursor: pointer;
+            height: 26px;
+            width: 26px;
+            background: rgb(253, 187, 45);
+            border-radius: 100px;
+            border: 2px solid rgba(234, 21, 10, 0.923);
+            /* background-image: url(img/mapbox-icon.png); */
+        }
+
+        /* Marker tweaks */
+        .mapboxgl-popup {
+            padding-bottom: 50px;
+        }
+
+        .mapboxgl-popup-close-button {
+            display: none;
+        }
+
+        .mapboxgl-popup-content {
+            font: 400 15px/22px 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+            padding: 0;
+            width: 220px;
+        }
+
+        .mapboxgl-popup-content .h3 {            
+            color: #101010;
+            margin: -15px 0 0;
+            padding: 10px;
+            border-radius: 3px 3px 0 0;
+            font-weight: 700;
+        }
+
+        .mapboxgl-popup-content h4 {
+            margin: 0;
+            padding: 10px;
+            font-weight: 400;
+        }
+
+        .mapboxgl-popup-content div {
+            padding: 10px;
+        }
+
+        .mapboxgl-popup-anchor-top>.mapboxgl-popup-content {
+            margin-top: 15px;
+        }
+
+        .mapboxgl-popup-anchor-top>.mapboxgl-popup-tip {
+            border-bottom-color: rgba(253, 187, 45, 1);
+        }
+
+        .mapboxgl-ctrl-geocoder {
+            border-radius: 0;
+            position: relative;
+            top: 0;
+            width: 800px;
+            margin-top: 0;
+            border: 0;
+        }
+
+        .mapboxgl-ctrl-geocoder>div {
+            min-width: 100%;
+            margin-left: 0;
+        }
+        .img-tag{
+            width: 90px;
+            border-radius: 5px;
+
+        }
+        .popupimg{
+            width: 220px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+        <section class="header">
+            <div class="logo-main">
+                <a href="#"><img class="logo" src="img/logo1.png" alt=""></a>
+                <button id="close">
+                    <div class="iclose">
+                        <img src="img/close.png" alt="" width="30px">
+                    </div>
+                </button>
+            </div>
+            <ul class="navbar">
+                <li><a href="explore.html">Explore</a></li>
+                <li><a href="index.html">Coordinates</a></li>
+                <li><a href="navigate.html">Direction</a></li>
+                <li><a href="https://myhighst.com.my/">Myhighst</a></li>
+                <li><a href="https://myhighst.com.my/services">Services</a></li>
+                <li><a href="https://myhighst.com.my/contact-us">Contact Us</a></li>
+            </ul>
+            <div class="downloadapp">
+                <a class="downloadicon" href="#"><img src="img/googleplay.png" alt="" width="100px"></a>
+                <a class="downloadicon" href="#"><img src="img/appstore.png" alt="" width="100px"></a>
+            </div>
+        
+        </section>
+    <section class="map-area">
+        <div class="sidebar">
+            <div class="heading">
+                <div class="mobile">
+                    <button id="menubar">
+                        <div class="icon">
+                            <img class="iconimg" src="img/hamburger.png" alt="" width="30px">
+                        </div>
+                    </button>
+                </div>
+                <h1>Our locations</h1>
+            </div>
+            <div id="listings" class="listings"></div>
+        </div>
+        <div id="map" class="map"></div>
+    </section>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiY2xpbnRvbmNydWl6YSIsImEiOiJjbDF3a2x4MjgzNDVjM2JxcnY3eDVuemFoIn0.qh0Ni8NWqKgGSEZTdk3IAw';
+
+        /**
+         * Add the map to the page
+         */
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v10',
+            center: [101.91835, 2.70330],
+            zoom: 13,   
+            scrollZoom: false
+        });
+
+        const stores = {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [101.937405,2.724924]
+                    },
+                    'properties': {
+                        'businessName': 'THYE HIN CREDIT SDN BHD',
+                        'phoneFormatted': '(06) 762-1188',
+                        'phone': '06-7621188',
+                        'image': 'img/thye hin.jpg',
+                        'describe': 'WE SELL  ALL  KIND OF BRANDED ELECTRICAL HOME PRODUCTS',
+                        'time': ' Mon - Sun: 10:30AM - 9:00PM',
+                        'link': 'Seremban',
+                        'address': 'No. 20, Jalan Tuanku Munawir',
+                        'city': 'Seremban',
+                        'country': 'Malaysia',
+                        'crossStreet': '',
+                        'postalCode': '70000',
+                        'state': 'Negeri Sembilan',
+                        'coordinate': [2.724924,101.937405]
+                    }
+                },
+                {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [101.904561,2.695932]
+                    },
+                    'properties': {
+                        'businessName': 'RACASSIA THAI WESTERN CAFÉ',
+                        'phoneFormatted': '(012)601-3908',
+                        'image': 'img/front look racassia.jpg',
+                        'describe': 'Raccasia Thai Western Cafe connects people who love Thai and Western Food with a twist of Thai.',
+                        'time': ' Daily: 10:00AM - 10:00PM',
+                        'link': 'https://myhighst.com.my/business/listing/racassia-thai-western-cafz',
+                        'phone': '012 6013908',
+                        'num': '2',
+                        'address': 'Mydin Mall',
+                        'city': 'Seremban 2',
+                        'country': 'Malaysia',
+                        'crossStreet': '',
+                        'postalCode': '70300',
+                        'state': 'Seremban, Negeri Sembilan',
+                        'coordinate': [2.695932,101.904561]
+                    }
+                },
+                {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [100.369105,6.124475]
+                    },
+                    'properties': {
+                        'businessName': 'VR STAR KEDAH ALOR STAR',
+                        'phoneFormatted': '(016) 776-1817',
+                        'phone': '0167761817',
+                        'image': 'img/KEDAH-FRONT.jpg',
+                        'describe': 'merupakan Pusat Sehenti Barangan Perkahwinan dan Hiasan Rumah yang ditubuhkan pada 22 februari 2005 di Ipoh Perak.',
+                        'time': ' Daily: 10:00AM - 8:00PM',
+                        'link': 'https://myhighst.com.my/business/listing/vr-star-kedah-alor-star',
+                        'address': '535-C Jalan Teluk Wanjah',
+                        'city': ' Alor Setar',
+                        'country': 'Malaysia',
+                        'crossStreet': '',
+                        'postalCode': '05200',
+                        'state': 'Kedah',
+                        'coordinate': [6.124475,100.369105] 
+                    }
+                },
+                {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Point',
+                        'coordinates': [101.806139,2.552083]
+                    },
+                    'properties': {
+                        'businessName': 'FATIMAH BAKERY PD',
+                        'phoneFormatted': '(010) 766-1799',
+                        'phone': '0107661799',
+                        'image': 'img/fbakery-front.jpg',
+                        'describe': 'We Make one of the best Cakes, Pies, Puffs, Bread',
+                        'time': ' Mon - Sun: 10:30AM - 9:00PM',
+                        'link': 'https://myhighst.com.my/business/listing/fatimah-bakery-pd',
+                        'address': 'No 476/5 Jalan Seremban ',
+                        'city': 'Port Dickson',
+                        'country': 'Malaysia',
+                        'crossStreet': 'Taman Negeri',
+                        'postalCode': '71000',
+                        'state': 'Negeri Sembilan.',
+                        'coordinate': [2.552083,101.806139] 
+                    }
+                }      
+            ]
+        };
+
+        /**
+         * Assign a unique id to each store. You'll use this `id`
+         * later to associate each point on the map with a listing
+         * in the sidebar.
+         */
+        stores.features.forEach((store, i) => {
+            store.properties.id = i;
+        });
+
+        /**
+         * Wait until the map loads to make changes to the map.
+         */
+        map.on('load', () => {
+            /**
+             * This is where your '.addLayer()' used to be, instead
+             * add only the source without styling a layer
+             */
+            map.addSource('places', {
+                'type': 'geojson',
+                'cluster': true,
+                'clusterRadius': 80,
+                'data': stores
+            });
+
+            /**
+             * Create a new MapboxGeocoder instance.
+             */
+            const geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+                marker: true,
+                bbox: [101.601563, 4.565474, 101.601563, 4.565474]
+            });
+
+            /**
+             * Add all the things to the page:
+             * - The location listings on the side of the page
+             * - The search box (MapboxGeocoder) onto the map
+             * - The markers onto the map
+             */
+            buildLocationList(stores);
+            map.addControl(geocoder, 'top-left');
+            addMarkers();
+
+            /**
+             * Listen for when a geocoder result is returned. When one is returned:
+             * - Calculate distances
+             * - Sort stores by distance
+             * - Rebuild the listings
+             * - Adjust the map camera
+             * - Open a popup for the closest store
+             * - Highlight the listing for the closest store.
+             */
+            geocoder.on('result', (event) => {
+                /* Get the coordinate of the search result */
+                const searchResult = event.result.geometry;
+
+                /**
+                 * Calculate distances:
+                 * For each store, use turf.disance to calculate the distance
+                 * in miles between the searchResult and the store. Assign the
+                 * calculated value to a property called `distance`.
+                 */
+                const options = { units: 'miles' };
+                for (const store of stores.features) {
+                    store.properties.distance = turf.distance(
+                        searchResult,
+                        store.geometry,
+                        options
+                    );
+                }
+
+                /**
+                 * Sort stores by distance from closest to the `searchResult`
+                 * to furthest.
+                 */
+                stores.features.sort((a, b) => {
+                    if (a.properties.distance > b.properties.distance) {
+                        return 1;
+                    }
+                    if (a.properties.distance < b.properties.distance) {
+                        return -1;
+                    }
+                    return 0; // a must be equal to b
+                });
+
+                /**
+                 * Rebuild the listings:
+                 * Remove the existing listings and build the location
+                 * list again using the newly sorted stores.
+                 */
+                const listings = document.getElementById('listings');
+                while (listings.firstChild) {
+                    listings.removeChild(listings.firstChild);
+                }
+                buildLocationList(stores);
+
+                /* Open a popup for the closest store. */
+                createPopUp(stores.features[0]);
+
+                /** Highlight the listing for the closest store. */
+                const activeListing = document.getElementById(
+                    `listing-${stores.features[0].properties.id}`
+                );
+                activeListing.classList.add('active');
+
+                /**
+                 * Adjust the map camera:
+                 * Get a bbox that contains both the geocoder result and
+                 * the closest store. Fit the bounds to that bbox.
+                 */
+                const bbox = getBbox(stores, 0, searchResult);
+                map.fitBounds(bbox, {
+                    padding: 100
+                });
+            });
+        });
+
+        /**
+         * Using the coordinates (lng, lat) for
+         * (1) the search result and
+         * (2) the closest store
+         * construct a bbox that will contain both points
+         */
+        function getBbox(sortedStores, storeIdentifier, searchResult) {
+            const lats = [
+                sortedStores.features[storeIdentifier].geometry.coordinates[1],
+                searchResult.coordinates[1]
+            ];
+            const lons = [
+                sortedStores.features[storeIdentifier].geometry.coordinates[0],
+                searchResult.coordinates[0]
+            ];
+            const sortedLons = lons.sort((a, b) => {
+                if (a > b) {
+                    return 1;
+                }
+                if (a.distance < b.distance) {
+                    return -1;
+                }
+                return 0;
+            });
+            const sortedLats = lats.sort((a, b) => {
+                if (a > b) {
+                    return 1;
+                }
+                if (a.distance < b.distance) {
+                    return -1;
+                }
+                return 0;
+            });
+            return [
+                [sortedLons[0], sortedLats[0]],
+                [sortedLons[1], sortedLats[1]]
+            ];
+        }
+
+        /**
+         * Add a marker to the map for every store listing.
+         **/
+        function addMarkers() {
+            /* For each feature in the GeoJSON object above: */
+            for (const marker of stores.features) {
+                /* Create a div element for the marker. */
+                const el = document.createElement('div');
+                /* Assign a unique `id` to the marker. */
+                el.id = `marker-${marker.properties.id}`;
+                /* Assign the `marker` class to each marker for styling. */
+                el.className = 'marker';
+
+                /**
+                 * Create a marker using the div element
+                 * defined above and add it to the map.
+                 **/
+                new mapboxgl.Marker(el, { offset: [0, -23] })
+                    .setLngLat(marker.geometry.coordinates)
+                    .addTo(map);
+
+                /**
+                 * Listen to the element and when it is clicked, do three things:
+                 * 1. Fly to the point
+                 * 2. Close all other popups and display popup for clicked store
+                 * 3. Highlight listing in sidebar (and remove highlight for all other listings)
+                 **/
+                el.addEventListener('click', (e) => {
+                    flyToStore(marker);
+                    createPopUp(marker);
+                    const activeItem = document.getElementsByClassName('active');
+                    e.stopPropagation();
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    const listing = document.getElementById(
+                        `listing-${marker.properties.id}`
+                    );
+                    listing.classList.add('active');
+                });
+            }
+        }
+
+        /**
+         * Add a listing for each store to the sidebar.
+         **/
+        function buildLocationList(stores) {
+            for (const store of stores.features) {
+                /* Add a new listing section to the sidebar. */
+                const listings = document.getElementById('listings');
+                const listing = listings.appendChild(document.createElement('div'));
+                /* Assign a unique `id` to the listing. */
+                listing.id = `listing-${store.properties.id}`;
+                /* Assign the `item` class to each listing for styling. */
+                listing.className = 'item';
+
+                /* Add the link to the individual listing created above. */
+                const link = listing.appendChild(document.createElement('a'));
+                link.href = '#';
+                link.className = 'title';
+                link.id = `link-${store.properties.id}`;
+                link.innerHTML = `<img src='${store.properties.image}' class="img-tag">
+                 <div class="list-name">${store.properties.businessName}<br> ${store.properties.address}</div>`;
+                
+                /* Add details to the individual listing. */
+                const details = listing.appendChild(document.createElement('div'));               
+                details.innerHTML = `${store.properties.city}`;
+                if (store.properties.phone) {
+                    details.innerHTML += ` &middot; ${store.properties.phoneFormatted}`;
+                }
+                if (store.properties.distance) {
+                    const roundedDistance =
+                        Math.round(store.properties.distance * 100) / 100;
+                    details.innerHTML += `<div><strong>${roundedDistance} miles away</strong></div>`;
+                }
+
+                /**
+                 * Listen to the element and when it is clicked, do four things:
+                 * 1. Update the `currentFeature` to the store associated with the clicked link
+                 * 2. Fly to the point
+                 * 3. Close all other popups and display popup for clicked store
+                 * 4. Highlight listing in sidebar (and remove highlight for all other listings)
+                 **/
+                link.addEventListener('click', function () {
+                    for (const feature of stores.features) {
+                        if (this.id === `link-${feature.properties.id}`) {
+                            flyToStore(feature);
+                            createPopUp(feature);
+                        }
+                    }
+                    const activeItem = document.getElementsByClassName('active');
+                    if (activeItem[0]) {
+                        activeItem[0].classList.remove('active');
+                    }
+                    this.parentNode.classList.add('active');
+                });
+            }
+        }
+
+        /**
+         * Use Mapbox GL JS's `flyTo` to move the camera smoothly
+         * a given center point.
+         **/
+        function flyToStore(currentFeature) {
+            map.flyTo({
+                center: currentFeature.geometry.coordinates,
+                zoom: 15
+            });
+        }
+
+        /**
+         * Create a Mapbox GL JS `Popup`.
+         **/
+        function createPopUp(currentFeature) {
+            const popUps = document.getElementsByClassName('mapboxgl-popup');
+            if (popUps[0]) popUps[0].remove();
+
+            const popup = new mapboxgl.Popup({ closeOnClick: false })
+                .setLngLat(currentFeature.geometry.coordinates)
+                .setHTML(
+                    `<img src='${currentFeature.properties.image}' class="popupimg">
+                    <a href="${currentFeature.properties.link}" class="h3">${currentFeature.properties.businessName}</a>
+                    <h4>${currentFeature.properties.address}</h4>
+                    <p>${currentFeature.properties.describe}</p>
+                    <p>${currentFeature.properties.time}</p>
+                    <a href="http://maps.google.com/maps?daddr=${currentFeature.properties.coordinate}">Get Direction</a>
+                    `
+                )
+                .addTo(map);
+        }
+
+
+        // navbar section 
+            const bar = document.getElementById('menubar');
+            const close = document.getElementById('close');
+            const closing = document.querySelector('#map_canvas');
+            const scroll = document.querySelector('.header');
+
+            if (bar) {
+                bar.addEventListener('click', () => {
+                    scroll.classList.add('active');
+                })
+            }
+            if (close) {
+                close.addEventListener('click', () => {
+                    scroll.classList.remove('active');
+                })
+            }
+
+            if (closing) {
+                closing.addEventListener('click', () => {
+                    scroll.classList.remove('active');
+                })
+            }
+    </script>
+</body>
+
+</html>
